@@ -1,4 +1,4 @@
-<?php
+<?php
 
 class NivelController extends Controller
 {
@@ -53,7 +53,8 @@ class NivelController extends Controller
 		{
 			$model->attributes=$_POST['Nivel'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+                            $this->redirect(array('admin'));
+				//$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
@@ -76,7 +77,8 @@ class NivelController extends Controller
 		{
 			$model->attributes=$_POST['Nivel'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+                            $this->redirect(array('admin'));
+				//$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('update',array(
@@ -97,7 +99,7 @@ class NivelController extends Controller
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_POST['ajax']))
-				$this->redirect(array('index'));
+				$this->redirect(array('admin'));
 		}
 		else
 			throw new CHttpException(400,Yii::t('App','Invalid request. Please do not repeat this request again.'));
