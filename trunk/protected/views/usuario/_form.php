@@ -45,13 +45,13 @@
 </div>
 
 <div class="row">
-<label for="nivel"><?php echo Yii::t('app', 'Nivel'); ?></label>
+<label for="rol"><?php echo Yii::t('app', 'Rol'); ?></label>
 <?php $this->widget(
 					'Relation',
 					array(
 							'model' => $model,
-							'relation' => 'nivel',
-							'fields' => 'nombre',
+							'relation' => 'rol',
+							'fields' => 'rol',
 							'allowEmpty' => false,
 							'style' => 'dropdownlist',
 							'htmlOptions' => array(
@@ -61,13 +61,13 @@
 </div>
 
 <div class="row">
-<label for="rol"><?php echo Yii::t('app', 'Rol'); ?></label>
+<label for="nivel"><?php echo Yii::t('app', 'Nivel'); ?></label>
 <?php $this->widget(
 					'Relation',
 					array(
 							'model' => $model,
-							'relation' => 'rol',
-							'fields' => 'rol',
+							'relation' => 'nivel',
+							'fields' => 'nombre',
 							'allowEmpty' => false,
 							'style' => 'dropdownlist',
 							'htmlOptions' => array(

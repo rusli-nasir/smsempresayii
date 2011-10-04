@@ -3,7 +3,7 @@ if(!isset($this->breadcrumbs))
 
 $this->breadcrumbs=array(
 'Usuarios'=>array('index'),
-	$model->nombre,
+	$model->username,
 	);
 
 if(!isset($this->menu) || $this->menu === array())

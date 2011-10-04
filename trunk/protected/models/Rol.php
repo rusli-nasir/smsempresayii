@@ -8,6 +8,9 @@
  * @property string $rol
  * @property string $descripcion
  * @property integer $activo
+ *
+ * The followings are the available model relations:
+ * @property Usuario[] $usuarios
  */
 class Rol extends CActiveRecord
 {
@@ -64,7 +67,7 @@ class Rol extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'Id',
+			'id' => 'ID',
 			'rol' => 'Rol',
 			'descripcion' => 'Descripcion',
 			'activo' => 'Activo',
@@ -83,14 +86,11 @@ class Rol extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-
 		$criteria->compare('rol',$this->rol,true);
-
 		$criteria->compare('descripcion',$this->descripcion,true);
-
 		$criteria->compare('activo',$this->activo);
 
-		return new CActiveDataProvider('Rol', array(
+		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}

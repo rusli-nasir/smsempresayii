@@ -1,18 +1,16 @@
 <?php
-if(!isset($this->breadcrumbs))
 $this->breadcrumbs=array(
-	'Grupocontactos'=>array(Yii::t('app', 'index')),
-	Yii::t('app', 'Create'),
+	'Grupos'=>array(Yii::t('app', 'admin')),
+	Yii::t('App', 'Assign').' Contactos',
 );
 
-if(!isset($this->menu))
 $this->menu=array(
-	array('label'=>Yii::t('app', 'List') . ' Grupocontacto', 'url'=>array('index')),
-	array('label'=>Yii::t('app', 'Manage') . ' Grupocontacto', 'url'=>array('admin')),
+	array('label' => Yii::t('App', 'List') . ' Grupo', 'url' => array('/grupo/index')),
+	array('label'=>Yii::t('App', 'Manage') . ' Grupo', 'url'=>array('/grupo/admin')),
 );
 ?>
 
-<h1> Create Grupocontacto </h1>
+<h1> <?php Yii::t('App', 'Assign'); ?> Contactos</h1>
 <?php
 $this->renderPartial('_form', array(
 			'model' => $model,

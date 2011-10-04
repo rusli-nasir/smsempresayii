@@ -3,7 +3,7 @@ if(!isset($this->breadcrumbs))
 
 $this->breadcrumbs=array(
 	'Usuarios'=>array('index'),
-	$model->nombre=>array('view','id'=>$model->id),
+	$model->username=>array('view','id'=>$model->id),
 	Yii::t('app', 'Update'),
 );
 
