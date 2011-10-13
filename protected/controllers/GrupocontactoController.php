@@ -13,7 +13,11 @@ class GrupocontactoController extends GController {
             'model' => $this->loadModel(),
         ));
     }
+    public function actionStorecontact() {
+        $models = Contacto::model()->findAll();
 
+        print_r(CJSON::encode($models));
+    }
     public function actionCreate() {
         $model = new Grupocontacto;
 

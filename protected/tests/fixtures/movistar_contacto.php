@@ -6,14 +6,16 @@ return array(
 		'nombres' => '',
 		'telefono' => '',
 		'fechaNacimiento' => '',
-		'fechaIngreso' => '',
+		'createtime' => '',
+		'grupoInicial' => '',
 		'activo' => '',
 	),
 	'sample2'=>array(
 		'nombres' => '',
 		'telefono' => '',
 		'fechaNacimiento' => '',
-		'fechaIngreso' => '',
+		'createtime' => '',
+		'grupoInicial' => '',
 		'activo' => '',
 	),
 	*/

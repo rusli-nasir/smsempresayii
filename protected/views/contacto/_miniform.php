@@ -46,7 +46,7 @@
 
 <div class="row">
 <?php echo $form->labelEx($model,'grupoInicial'); ?>
-<?php echo $form->textField($model,'grupoInicial',array('size'=>20,'maxlength'=>20)); ?>
+<?php echo $form->textField($model,'grupoInicial',array('size'=>60,'maxlength'=>100)); ?>
 <?php echo $form->error($model,'grupoInicial'); ?>
 </div>
 

@@ -1,5 +1,5 @@
-<div class="view">
-
+<div class="view">
+
 	<b><?php echo CHtml::encode($data->getAttributeLabel('grupoid')); ?>:</b>
 	<?php echo CHtml::link(CHtml::encode($data->grupoid), array('view', 'id'=>$data->grupoid)); ?>
 	<br />
@@ -24,5 +24,5 @@
 	<?php echo CHtml::encode($data->activo); ?>
 	<br />
 
-
+
 </div>
