@@ -1,5 +1,5 @@
-<div class="view">
-
+<div class="view">
+
 	<b><?php echo CHtml::encode($data->getAttributeLabel('contactoid')); ?>:</b>
 	<?php echo CHtml::link(CHtml::encode($data->contactoid), array('view', 'id'=>$data->contactoid)); ?>
 	<br />
@@ -28,5 +28,5 @@
 	<?php echo CHtml::encode($data->activo); ?>
 	<br />
 
-
+
 </div>

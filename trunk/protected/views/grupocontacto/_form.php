@@ -1,44 +1,1 @@
-<div class="form">
-    <p class="note">
-        <?php echo Yii::t('app', 'Fields with'); ?> <span class="required">*</span> <?php echo Yii::t('app', 'are required'); ?>.
-    </p>
-
-    <?php
-    $contactos=Grupo::model()->findAll();
-    $form = $this->beginWidget('CActiveForm', array(
-        'id' => 'grupocontacto-form',
-        'enableAjaxValidation' => true,
-            ));
-    echo $form->errorSummary($model);
-    $this->widget(
-          'application.extensions.emultiselect.EMultiSelect',
-          array('sortable'=>false/true, 'searchable'=>false/true)
-    );
-    ?>
-
-    <div class="row">
-        <label for="grupo"><?php echo Yii::t('app', 'Grupo'); ?></label>
-        <?php
-        $this->widget(
-                'Relation', array(
-            'model' => $model,
-            'relation' => 'grupo',
-            'fields' => 'nombre',
-            'allowEmpty' => false,
-            'style' => 'dropdownlist',
-            'htmlOptions' => array(
-                'checkAll' => Yii::t('app', 'Choose all'),
-            ),)
-        );
-        ?>
-    </div>
-    <div class="row">
-        <?php echo $form->dropDownList('Contactos','0', $contactos);?>
-    </div>
-    <div class="row buttons">
-        <?php echo CHtml::link(Yii::t('App', 'Save'), 'javascript:;', array('submit' => '', 'class' => 'positive')); ?>
-        <?php echo CHtml::link(Yii::t('App', 'Cancel'), array('/grupo/admin'), array('class' => 'negative')); ?>
-        <div class="clear"></div>
-    </div>
-    <?php $this->endWidget(); ?>
-</div> <!-- form -->
+<div class="form">    <p class="note">        <?php echo Yii::t('app', 'Fields with'); ?> <span class="required">*</span> <?php echo Yii::t('app', 'are required'); ?>.    </p>    <?php    //$contactos=  Contacto::model()->findAll();    $form = $this->beginWidget('CActiveForm', array(        'id' => 'grupocontacto-form',        'enableAjaxValidation' => true,            ));    echo $form->errorSummary($model);    /*$this->widget(            'application.extensions.emultiselect.EMultiSelect', array('sortable' => false / true, 'searchable' => false / true)    );*/    ?>    <div class="row">        <label for="grupo"><?php echo Yii::t('app', 'Grupo'); ?></label>    <?php    $this->widget(            'Relation', array(        'model' => $model,        'relation' => 'grupo',        'fields' => 'nombre',        'allowEmpty' => false,        'style' => 'dropdownlist',        'htmlOptions' => array(            'checkAll' => Yii::t('app', 'Choose all'),            'multiple'  =>  'multiple',            'data-placeholder'  =>  'Seleccione un grupo...',            'class' =>  'cbogrupo'        ),)    );    ?>    </div>    <div class="row">        <?php        $this->widget(                'Relation', array(            'model' => $model,            'relation' => 'contacto',            'fields' => 'nombres',            'allowEmpty' => false,            'style' => 'ListBox',            'htmlOptions'   =>  array(                'checkAll'  =>  Yii::t('app', 'Choose all'),                'multiple'  =>  'multiple',                'class'     =>  'cbocontact',                'prompt'    =>  'Seleccione...',            ),)        );        ////echo $form->dropDownList($model,'Asignar',CHtml::listData(Contacto::model()->findAll(), 'contactoid', 'telefono'),array ('prompt'=>'Seleccione...'));        ?><?php //print_r(CHtml::listData(Contacto::model()->findAll(),'contactoid','telefono')); ?>    </div>    <div class="row buttons">        <?php echo CHtml::link(Yii::t('App', 'Save'), 'javascript:;', array('submit' => '', 'class' => 'positive')); ?>        <?php echo CHtml::link(Yii::t('App', 'Cancel'), array('/grupo/admin'), array('class' => 'negative')); ?>        <div class="clear"></div>    </div>        <?php $this->endWidget(); ?><?php            $cs = Yii::app()->getClientScript();            $cs->registerCssFile('http://harvesthq.github.com/chosen/chosen/chosen.css');            $cs->registerScriptFile('http://harvesthq.github.com/chosen/chosen/chosen.jquery.js',CClientScript::POS_END);             $cs->registerScript(                    "checkGrupo", "jQuery().ready(function(){                        $(\"select.cbogrupo\").chosen();            });",CClientScript::POS_END);            /**Ext combo            $cs->registerCssFile('http://www.figtreesystems.com/ext/ext-2.0/resources/css/ext-all.css');            $cs->registerCssFile('http://www.figtreesystems.com/ext/ext-ux/2.0/Multiselect/Multiselect.css');            $cs->registerScriptFile('http://www.figtreesystems.com/ext/ext-2.0/adapter/ext/ext-base.js',CClientScript::POS_END);            $cs->registerScriptFile('http://www.figtreesystems.com/ext/ext-2.0/ext-all.js',CClientScript::POS_END);            $cs->registerScriptFile('http://www.figtreesystems.com/ext/ext-ux/2.0/Multiselect/Multiselect.js',CClientScript::POS_END);            $cs->registerScriptFile('http://www.figtreesystems.com/ext/ext-ux/2.0/Multiselect/DDView.js',CClientScript::POS_END);             * */            /**Activar checklist: funciona pero es muy tardado             $cs->registerCssFile('http://www.scotthorlbeck.com/code/tochecklist/js/jquery.toChecklist.min.css');            $cs->registerScriptFile('http://wheresrhys.co.uk/resources/crossSelect/1_jquery-1.3.2.js',CClientScript::POS_END);            $cs->registerScriptFile('http://www.scotthorlbeck.com/code/tochecklist/js/jquery.toChecklist.min.js',CClientScript::POS_END);            $cs->registerScript(                    "checklist", "jQuery().ready(function(){                        $('select[multiple=\"multiple\"]').toChecklist();            });",CClientScript::POS_END);*/            /*Activar crossSelect: Funciona pero es muy tardado y se pega cuando seleccionamos todos             * $cs->registerCssFile('http://wheresrhys.co.uk/resources/crossSelect/jquery.crossSelect.css');            $cs->registerScriptFile('http://wheresrhys.co.uk/resources/crossSelect/1_jquery-1.3.2.js',CClientScript::POS_END);            $cs->registerScriptFile('http://wheresrhys.co.uk/resources/crossSelect/jquery.crossSelect.js',CClientScript::POS_END);            $cs->registerScript(                    "checklist", "jQuery().ready(function(){                        $('select[multiple=\"multiple\"]').crossSelect({vertical: \"expand\",horizontal: \"expand\",clickSelects: true});            });",CClientScript::POS_END);*/            /*Activar listSelect: descartado porque solo es posible pasarlo uno a uno            $cs->registerCssFile('http://wheresrhys.co.uk/resources/crossSelect/jquery.crossSelect.css');            $cs->registerScriptFile('http://www.preeostudios.com/js/jquery.listselect.min.js',CClientScript::POS_END);            $cs->registerScript(                    "checkContact", "jQuery().ready(function(){                        $('select.cbocontact').listselect();            });",CClientScript::POS_END);*/             ?></div> <!-- form -->
