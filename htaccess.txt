@@ -1,0 +1,12 @@
+# Configuracion de php
+php_value date.timezone 'America/Managua'
+php_flag display_errors On
+
+RewriteEngine on
+
+# if a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# otherwise forward it to index.php
+RewriteRule . index.php
