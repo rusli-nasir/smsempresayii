@@ -31,7 +31,7 @@ $this->panel=false;
 </div><!-- form -->
 <?php
 $cs = Yii::app()->getClientScript();
-$cs->registerScriptFile($baseUrl.'/js/jquery.hint.js',CClientScript::POS_END);
+$cs->registerScriptFile('/js/jquery.hint.js',CClientScript::POS_END);
 $cs->registerScript(
   "slidepanel",
   "jQuery().ready(function(){
