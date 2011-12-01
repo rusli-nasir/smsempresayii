@@ -7,7 +7,7 @@
  * @property string $id
  * @property string $nombre
  * @property string $valor
- * @property string $fecha
+ * @property string $createtime
  * @property integer $activo
  */
 class Variable extends CActiveRecord
@@ -37,13 +37,16 @@ class Variable extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre, valor, fecha, activo', 'required'),
+			array('nombre, valor, activo', 'required'),
 			array('activo', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>20),
+			array('nombre', 'unique',),
+			array('nombre', 'match', 'pattern'=>'/^[a-zA-Z0-9\-_@]{1,20}$/','message'=>'El nombre no debe contener caracteres especiales'),
+			array('nombre', 'match', 'pattern'=>'/^@(.*){1,20}$/','message'=>'El nombre debe iniciar con @'),
 			array('valor', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nombre, valor, fecha, activo', 'safe', 'on'=>'search'),
+			array('id, nombre, valor, createtime, activo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,17 +60,22 @@ class Variable extends CActiveRecord
 		return array(
 		);
 	}
-
+        public function beforeSave() {
+            //if (strpos($this->nombre,'@')!==false){
+                $this->nombre = '@'.strtolower(trim($this->nombre,'@'));
+            //}
+            return parent::beforeSave();
+        }
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'Id',
+			'id' => 'ID',
 			'nombre' => 'Nombre',
 			'valor' => 'Valor',
-			'fecha' => 'Fecha',
+			'createtime' => 'Fecha Creación',
 			'activo' => 'Activo',
 		);
 	}
@@ -89,7 +97,7 @@ class Variable extends CActiveRecord
 
 		$criteria->compare('valor',$this->valor,true);
 
-		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('createtime',$this->createtime,true);
 
 		$criteria->compare('activo',$this->activo);
 

@@ -17,28 +17,8 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'valor'); ?>
-		<?php echo $form->textField($model,'valor',array('size'=>60,'maxlength'=>200)); ?>
+		<?php echo $form->textArea($model,'valor',array('size'=>60,'maxlength'=>200)); ?>
 		<?php echo $form->error($model,'valor'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'fecha'); ?>
-		<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
-              array(
-                    'model'=>'$model',
-                    'name'=>'Variable[fecha]',
-                    'language'=>'es',
-                    //'mode'=>'imagebutton',
-                    //'theme'=>'smoothness',
-                    'value'=>$model->fecha,
-                    /*'htmlOptions'=>array('size'=>10, 'style'=>'width:80px !important'),
-		            'options'=>array(
-		             	'showButtonPanel'=>true,
-						'changeYear'=>true,
-              			),*/
-              		)
-             ); ?>
-		<?php echo $form->error($model,'fecha'); ?>
 	</div>
 
 	<div class="row">
@@ -48,7 +28,9 @@
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('App', 'Create') : Yii::t('App', 'Save')); ?>
+		<?php echo CHtml::link($model->isNewRecord ? Yii::t('App', 'Create') : Yii::t('App', 'Save'),'javascript:;',array('submit'=>'','class'=>'positive')); ?>
+		<?php echo CHtml::link(Yii::t('App', 'Cancel'),array('admin'),array('class'=>'negative')); ?>
+            <div class="clear"></div>
 	</div>
 
 <?php $this->endWidget(); ?>

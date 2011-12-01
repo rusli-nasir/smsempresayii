@@ -1,0 +1,352 @@
+<?php
+
+class EnvioController extends Controller {
+
+    /**
+     * @var string the default layout for the views. Defaults to 'column2', meaning
+     * using two-column layout. See 'protected/views/layouts/column2.php'.
+     */
+    public $layout = 'column2';
+
+    /**
+     * @var string specifies the default action to be 'admin'. Default is index
+     */
+    public $defaultAction = 'admin';
+
+    /**
+     * @var CActiveRecord the currently loaded data model instance.
+     */
+    private $_model;
+
+    /**
+     * @return array action filters
+     */
+    public function filters() {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
+    }
+
+    /**
+     * Displays a particular model.
+     */
+    public function actionView() {
+        $this->render('view', array(
+            'model' => $this->loadModel(),
+        ));
+    }
+    //Actualiza lote de envios programados
+    public function actionSent() {
+        //content-type: application/json; charset=utf-8
+        header ('Content-Type: text/plain; charset=utf-8');
+         //header('Content-Type: text/json; charset=utf8');
+        try{
+            if(isset($_GET['reg'])&&!empty($_GET['reg'])&&isset($_GET['status'])&&!empty($_GET['status'])){
+
+                if($_GET['status']=="sent")
+                    $estado=1;
+                else
+                    throw new Exception("El estado recibido no existe");
+                if ($envio === null) {
+                    $envio = Mensaje::model()->updateAll(array('estadoid'=>$estado), sprintf('envioid=%u',$_GET['reg']));
+                    if ($envio === null)
+                        throw new CHttpException(404, Yii::t('App', 'The requested page does not exist.'));
+                    echo CJSON::encode(array('status'=>'ok'));
+                }
+            }else{
+                throw new Exception("No están definidos los parámetros");
+            }
+        }catch(Exception $ex){
+            echo CJSON::encode(array('status'=>'error','message'=>$ex->getMessage()));
+        }
+        Yii::app()->end();
+    }
+    /**
+     * Creates a new model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     */
+    public function actionCreate() {
+        set_time_limit(0);
+        $model = new Envio;
+        // Uncomment the following line if AJAX validation is needed
+        $this->performAjaxValidation($model);
+        //echo json_encode("Hello");
+
+        if (isset($_POST['Envio'])) {
+            $type = $_POST['Envio']['tipoenvio'];
+            //Uniendo el campo frecuencia
+            if (isset($_POST['days']) && $type != 1) {
+                $_POST['Envio']['frecuencia'] = join(',', $_POST['days']);
+            }
+            if($type==3){
+               $cid=(isset($_GET['cid'])&&!empty ($_GET['cid']))?$_GET['cid']:0;
+               $_POST['Envio']['conversationid'] = $cid;
+            }
+            $model->attributes = $_POST['Envio'];
+
+            if ($model->save()) {
+
+
+
+                //capturando datos enviados
+                $grupostr = str_replace('|', ',', $_POST['Envio']['grupos']);
+                //$grupos=explode('|',$_POST['Envio']['grupos']);
+                $message = $_POST['Envio']['mensaje'];
+
+
+
+                //Capturando prefijos
+                $prefijoStore = Prefijo::model()->findAll();
+                $prefijos = array();
+                foreach ($prefijoStore as $prefijo) {
+                    $prefijos[$prefijo->digito] = $prefijo->operadoraid;
+                }
+                //Buscando destinatarios
+                $command = Yii::app()->db->createCommand();
+                $contactos = $command->select('nombres,telefono,grupoid')->from('{{contacto}} c')->join('{{grupocontacto}} g', 'c.contactoid=g.contactoid')->where('grupoid IN (' . $grupostr . ') AND c.activo=1')->group('telefono')->queryAll();
+                $total=count($contactos);
+                if($total<=0){
+                    Yii::app()->user->setFlash('error', "No hay destinatarios para el envío!");
+                    header('Location:/envio/create?type=' . $type);
+                    //echo '<script>location.href="/envio/create?type=' . $type.'"</script></body></html>';
+                }
+                $messagesM = array();
+                //Banderas para susituir variables del sistema
+                $findcell = strpos($message, "@phone");
+                $findname = strpos($message, "@name");
+                $contactxadd = false;
+
+                //Inicia html de barra de progreso
+                echo '<html><head><style type="text/css"><!--.percents { line-height: 20px;font-size:11px;font-family: "Lucida Grande", "Lucida Sans", Arial, sans-serif;background: #FFF; border: 1px solid #CCC; margin: 1px; height: 20px; position:absolute; width:300px; z-index:10; left: 10px; top: 38px; text-align: center;}.blocks { background: #EEE; border: none; margin: 1px; height: 20px; position: absolute; z-index:11; top: 38px; filter: alpha(opacity=50); -moz-opacity: 0.5; opacity: 0.5; -khtml-opacity: .5}--></style></head><body>';
+                //Iniciando loading
+                if (ob_get_level() == 0) {
+                    ob_start();
+                }
+
+
+
+                $percent=100/$total;
+                $i=0;
+                $prev=0;
+                //$width=floor($percent*2.75);
+/*              $porcent=floor($i*$percent);
+                echo '<div class="percents">Enviando mensajes...&nbsp;' .$porcent. '%</div>';
+                echo '<div class="blocks" style="width:'.$width.'px;left: ' . ($porcent+11) . 'px">&nbsp;</div>';
+                flush();
+                ob_flush();
+                sleep(3);*/
+                //$interval=  ceil($total/100);
+                //Imprimiendo loading
+                //echo str_pad('Cargando... ', 4096) . "<br />\n";
+
+                foreach ($contactos as $contacto) {
+
+                    $phone = $contacto['telefono'];
+                    $prefix = substr($phone, 0, 4);
+
+                    $phone = "505" . substr($phone, 0, 8);
+                    $msg = $message;
+                    //Reemplazando variables
+                    if ($findcell !== false) {
+                        $msg = str_replace("@phone", $phone, $msg);
+                    }
+                    if ($findname !== false) {
+                        $msg = str_replace("@name", $contacto['nombres'], $msg);
+                    }
+                    $fechaIterator = $model->fechaInicio;
+                    $contactxadd = true;
+                    while (strtotime($fechaIterator) <= strtotime($model->fechaFin)) {
+                        try {
+                            $mensaje = new Mensaje;
+                            $mensaje->operadoraid = isset($prefijos[$prefix]) ? $prefijos[$prefix] : 0;
+
+                            $mensaje->estadoid = ($mensaje->operadoraid == 0) ? 2 : ($type == 2) ? 3 : 1;
+                            $mensaje->usuarioid = Yii::app()->user->getId();
+                            $mensaje->telefono = $phone;
+                            $mensaje->mensaje = $msg;
+                            $mensaje->envioid = $model->id;
+                            $mensaje->grupoid = $contacto['grupoid'];
+                            if ($type == 2) {
+                                $mensaje->createtime = date('Y/m/d H:i', strtotime($fechaIterator . " " . $model->horaenvio));
+                            }
+                            if ($mensaje->save()) {
+                                if ($contactxadd) {
+                                    if ($mensaje->operadoraid == 1) {
+                                        $messagesM[$mensaje->telefono] = array(
+                                            '@tag' => 'message',
+                                            '@attr' => array(
+                                                'id' => $mensaje->id,
+                                                'phone' => $mensaje->telefono,
+                                                'name' => ''),
+                                            '@text' => $mensaje->mensaje
+                                        );
+                                        $contactxadd = false;
+                                    }
+                                }
+                            } else {
+                                print_r($mensaje->getErrors());
+                                exit();
+                            }
+                        } catch (Exception $e) {
+                            echo $e->getMessage();
+                            exit();
+                        }
+                        $fechaIterator = date("Y/m/d", strtotime($fechaIterator . " + 1 days"));
+                    }
+                    //Carga de barra
+                    //$d = $d + 11;
+
+                    $porcent=floor(($i+1)*$percent);
+
+                    //$width=3.;
+
+                    if($porcent>$prev){
+                        $width  =3;
+                        $left   =floor(($i)*$percent*3)+11;
+                        echo '<div class="percents">Enviando mensajes...&nbsp;' .$porcent. '%</div>';
+                        echo '<div class="blocks" style="width:'.$width.'px;left: ' .$left  . 'px">&nbsp;</div>';
+                        flush();
+                        ob_flush();
+                    //sleep(1);
+                        $prev=$porcent;
+                    }
+                    $i=$i+1;
+                }
+                ob_end_flush();
+                //echo '<div class="percents" style="z-index:12">Mensajes enviados.</div><script>location.href="/envio/create?type=' . $type.'"</script></body></html>';
+                echo '<div class="percents" style="z-index:12">Mensajes enviados.</div>';
+                //Enviando el xml para realizar el envio
+                if (count($messagesM) > 0) {
+                    $resultado = false;
+                    $ch = curl_init();
+                    if ($type == 1) {
+                        $xmlMovistar = XmlGen::generate($messagesM, $model->id) or die("Sin xml");
+                        //Ruta de webservice http://nicaragua.smsempresa.com/xml/
+                        curl_setopt($ch, CURLOPT_URL, "http://64.49.216.29/services/nicaragua/movistar/9797/SMSenterprise/severalsend.jsp?file=nicaragua.smsempresa.com/xml/" . $xmlMovistar);
+                    } else {
+                        $xmlMovistar = XmlGen::generate($messagesM, $model->id) or die("Sin xml");
+                        //Ruta de webservice http://nicaragua.smsempresa.com/xml/
+                        $days = join('|', $_POST['days']);
+                        $url = sprintf("http://64.49.216.29/services/nicaragua/movistar/9797/SMSenterprise/severalsend.jsp?date=%s&end_date=%s&time=%s&days=%s&file=nicaragua.smsempresa.com/xml/%s", date('Y-m-d', $model->fechaInicio), date('Y-m-d', $model->fechaFin), $model->horaenvio, $days, $xmlMovistar);
+                        curl_setopt($ch, CURLOPT_URL, $url);
+                    }
+                    echo "<div style='display:none'>";
+                    curl_setopt($ch, CURLOPT_HEADER, false);
+                    curl_setopt($sesion, CURLOPT_RETURNTRANSFER, true);
+                    $resultado=curl_exec($ch);
+                    echo "</div>";
+                    curl_close($ch);
+
+                    if ($resultado) {
+                        //echo "El envio ha sido procesado!!";
+                        Yii::app()->user->setFlash('success', "El envio ha sido procesado!");
+                    } else {
+                        Yii::app()->user->setFlash('error', "El envio ha fallado, en el formato de envio!");
+                    }
+                }
+
+                echo '<script>location.href="/envio/create?type=' . $type.'"</script></body></html>';
+                //header('Location:/envio/create?type=' . $type);
+                exit();
+                //$this->redirect(array('/envio/admin'));
+            }
+            //Yii::app()->end();
+        }
+
+        //$this->renderPartial('create', array('model' => $model,), false, true);
+        $this->render('create', array(
+            'model' => $model,
+        ));
+    }
+
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     */
+    public function actionUpdate() {
+        $model = $this->loadModel();
+
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
+
+        if (isset($_POST['Envio'])) {
+            $model->attributes = $_POST['Envio'];
+            if ($model->save())
+                $this->redirect(array('admin'));
+            //$this->redirect(array('view','id'=>$model->id));
+        }
+
+        $this->render('update', array(
+            'model' => $model,
+        ));
+    }
+
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     */
+    public function actionDelete() {
+        if (Yii::app()->request->isPostRequest) {
+            // we only allow deletion via POST request
+            $this->loadModel()->delete();
+
+            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+            if (!isset($_POST['ajax']))
+                $this->redirect(array('admin'));
+        }
+        else
+            throw new CHttpException(400, Yii::t('App', 'Invalid request. Please do not repeat this request again.'));
+    }
+
+    /**
+     * Lists all models.
+     */
+    public function actionIndex() {
+        $dataProvider = new CActiveDataProvider('Envio');
+        $this->render('index', array(
+            'dataProvider' => $dataProvider,
+        ));
+    }
+
+    /**
+     * Manages all models.
+     */
+    public function actionAdmin() {
+        $model = new Envio('search');
+        if (isset($_GET['Envio']))
+            $model->attributes = $_GET['Envio'];
+        if (Yii::app()->request->isAjaxRequest&&isset($_GET['click'])&&$_GET['click']='details') {
+            $this->renderPartial('_admin', array('model' => $model,'id'=>$_GET['envioid']), false, true);
+        } else {
+            $this->render('admin', array(
+                'model' => $model,
+            ));
+        }
+    }
+
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     */
+    public function loadModel() {
+        if ($this->_model === null) {
+            if (isset($_GET['id']))
+                $this->_model = Envio::model()->findbyPk($_GET['id']);
+            if ($this->_model === null)
+                throw new CHttpException(404, Yii::t('App', 'The requested page does not exist.'));
+        }
+        return $this->_model;
+    }
+
+    /**
+     * Performs the AJAX validation.
+     * @param CModel the model to be validated
+     */
+    protected function performAjaxValidation($model) {
+        if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] === 'envio-form') {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+    }
+
+}

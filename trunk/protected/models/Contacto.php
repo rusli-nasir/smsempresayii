@@ -46,6 +46,7 @@ class Contacto extends CActiveRecord {
             array('nombres', 'length', 'max' => 50),
             array('telefono', 'length', 'max' => 15),
             array('grupoInicial', 'length', 'max' => 100),
+            array('grupoInicial', 'filter', 'filter'=>'trim'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('c.contactoid, nombres, telefono, c.createtime, grupos, c.activo', 'safe', 'on' => 'search'),

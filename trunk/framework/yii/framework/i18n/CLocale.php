@@ -14,7 +14,7 @@
  * The data includes the number formatting information and date formatting information.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLocale.php 2844 2011-01-13 01:29:55Z alexander.makarow $
+ * @version $Id: CLocale.php 3399 2011-09-16 15:02:53Z alexander.makarow $
  * @package system.i18n
  * @since 1.0
  */
@@ -302,5 +302,148 @@ class CLocale extends CComponent
 	public function getPluralRules()
 	{
 		return isset($this->_data['pluralRules']) ? $this->_data['pluralRules'] : array();
+	}
+
+	/**
+	 * Converts a locale ID to a language ID.
+	 * A language ID consists of only the first group of letters before an underscore or dash.
+	 * @param string $id the locale ID to be converted
+	 * @return string the language ID
+	 * @since 1.1.9
+	 */
+	public function getLanguageID($id)
+	{
+		// normalize id
+		$id = $this->getCanonicalID($id);
+		// remove sub tags
+		if(($underscorePosition=strpos($id, '_'))!== false)
+		{
+			$id = substr($id, 0, $underscorePosition);
+		}
+		return $id;
+	}
+
+	/**
+	 * Converts a locale ID to a script ID.
+	 * A script ID consists of only the last four characters after an underscore or dash.
+	 * @param string $id the locale ID to be converted
+	 * @return string the script ID
+	 * @since 1.1.9
+	 */
+	public function getScriptID($id)
+	{
+		// normalize id
+		$id = $this->getCanonicalID($id);
+		// find sub tags
+		if(($underscorePosition=strpos($id, '_'))!==false)
+		{
+			$subTag = explode('_', $id);
+			// script sub tags can be distigused from territory sub tags by length
+			if (strlen($subTag[1])===4)
+			{
+				$id = $subTag[1];
+			}
+			else
+			{
+				$id = null;
+			}
+		}
+		else
+		{
+			$id = null;
+		}
+		return $id;
+	}
+
+	/**
+	 * Converts a locale ID to a territory ID.
+	 * A territory ID consists of only the last two to three letter or digits after an underscore or dash.
+	 * @param string $id the locale ID to be converted
+	 * @return string the territory ID
+	 * @since 1.1.9
+	 */
+	public function getTerritoryID($id)
+	{
+		// normalize id
+		$id = $this->getCanonicalID($id);
+		// find sub tags
+		if (($underscorePosition=strpos($id, '_'))!== false)
+		{
+			$subTag = explode('_', $id);
+			// territory sub tags can be distigused from script sub tags by length
+			if (strlen($subTag[1])<4)
+			{
+				$id = $subTag[1];
+			}
+			else
+			{
+				$id = null;
+			}
+		}
+		else
+		{
+			$id = null;
+		}
+		return $id;
+	}
+
+	/**
+	 * @param string $id Unicode language identifier from IETF BCP 47. For example, the code "en_US" represents U.S. English and "en_GB" represents British English.
+	 * @param string $category
+	 * @return string the local display name for the language. Null if the language code does not exist.
+	 * @since 1.1.9
+	 */
+	public function getLocaleDisplayName($id=null, $category='languages')
+	{
+		$id = $this->getCanonicalID($id);
+		if (isset($this->_data[$category][$id]))
+		{
+			return $this->_data[$category][$id];
+		}
+		else if (($category == 'languages') && ($id=$this->getLanguageID($id)) && (isset($this->_data[$category][$id])))
+		{
+			return $this->_data[$category][$id];
+		}
+		else if (($category == 'scripts') && ($id=$this->getScriptID($id)) && (isset($this->_data[$category][$id])))
+		{
+			return $this->_data[$category][$id];
+		}
+		else if (($category == 'territories') && ($id=$this->getTerritoryID($id)) && (isset($this->_data[$category][$id])))
+		{
+			return $this->_data[$category][$id];
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * @param string $id Unicode language identifier from IETF BCP 47. For example, the code "en_US" represents U.S. English and "en_GB" represents British English.
+	 * @return string the local display name for the language. Null if the language code does not exist.
+	 * @since 1.1.9
+	 */
+	public function getLanguage($id)
+	{
+		return $this->getLocaleDisplayName($id, 'languages');
+	}
+
+	/**
+	 * @param string $id Unicode script identifier from IETF BCP 47. For example, the code "en_US" represents U.S. English and "en_GB" represents British English.
+	 * @return string the local display name for the script. Null if the script code does not exist.
+	 * @since 1.1.9
+	 */
+	public function getScript($id)
+	{
+		return $this->getLocaleDisplayName($id, 'scripts');
+	}
+
+	/**
+	 * @param string $id Unicode territory identifier from IETF BCP 47. For example, the code "en_US" represents U.S. English and "en_GB" represents British English.
+	 * @return string the local display name for the territory. Null if the territory code does not exist.
+	 * @since 1.1.9
+	 */
+	public function getTerritory($id)
+	{
+		return $this->getLocaleDisplayName($id, 'territories');
 	}
 }

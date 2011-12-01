@@ -13,21 +13,34 @@
 		<?php echo $form->labelEx($model,'rol'); ?>
 		<?php echo $form->textField($model,'rol',array('size'=>20,'maxlength'=>20)); ?>
 		<?php echo $form->error($model,'rol'); ?>
-                
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'descripcion'); ?>
 		<?php echo $form->textArea($model,'descripcion'); ?>
 		<?php echo $form->error($model,'descripcion'); ?>
-                
+	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'modulos'); ?>
+            <div class="jui frecuencia">
+		<?php
+                $items = array('grupo' => 'Grupos',
+                    'contacto' => 'Contactos',
+                    'envio' => 'Envios SMS',
+                    'keywords' => 'Keywords',
+                    'administracion' => 'Administración',
+                    'reportes' => 'Reportes',
+                    );
+                echo CHtml::checkBoxList('items', (count($model->modulos) > 0) ? explode(',', $model->modulos) : array(), $items, array('separator' => ' '));
+                ?>
+            </div>
+		<?php echo $form->error($model,'modulos'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'activo'); ?>
 		<?php echo $form->checkBox($model,'activo'); ?>
 		<?php echo $form->error($model,'activo'); ?>
-                
 	</div>
 
 	<div class="row buttons">

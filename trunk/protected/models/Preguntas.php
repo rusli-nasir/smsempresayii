@@ -68,7 +68,7 @@ class Preguntas extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'id_encuesta' => 'Id Encuesta',
+			'id_encuesta' => 'Keyword',
 			'pregunta' => 'Pregunta',
 		);
 	}
@@ -83,9 +83,11 @@ class Preguntas extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('id_encuesta',$this->id_encuesta,true);
+		
+		$criteria->with =array('idEncuesta');
+		$criteria->condition = "id_encuesta=".$_SESSION["encuesta"];
+		$criteria->compare('idEncuesta.keyword', $this->id_encuesta, true);
+		$criteria->compare('id',$this->id,true);		
 		$criteria->compare('pregunta',$this->pregunta,true);
 
 		return new CActiveDataProvider($this, array(

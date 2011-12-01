@@ -1,7 +1,8 @@
 <?php
 error_reporting(1);
 // change the following paths if necessary
-$yii='../../../framework/yii/framework/yii.php';
+$yii='framework/yii/framework/yii.php';
+require_once('framework/smsempresa/xmlgenerator.php');
 $config='protected/config/main.php';
 
 // remove the following lines when in production mode

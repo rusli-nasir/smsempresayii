@@ -11,13 +11,23 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->label($model,'grupos'); ?>
+		<?php echo $form->textField($model,'grupos',array('size'=>60,'maxlength'=>500)); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->label($model,'asunto'); ?>
 		<?php echo $form->textField($model,'asunto',array('size'=>60,'maxlength'=>150)); ?>
 	</div>
 
 	<div class="row">
+		<?php echo $form->label($model,'mensaje'); ?>
+		<?php echo $form->textField($model,'mensaje',array('size'=>60,'maxlength'=>200)); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->label($model,'tipoenvio'); ?>
-		<?php echo $form->textField($model,'tipoenvio',array('size'=>16,'maxlength'=>16)); ?>
+		<?php echo CHtml::activeDropDownList($model,'tipoenvio',CHtml::listData(Tipoenvio::model()->findAll(), 'tipoid', 'nombre')); ?>
 	</div>
 
 	<div class="row">

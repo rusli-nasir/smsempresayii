@@ -1,23 +1,18 @@
 <?php
-if(!isset($this->breadcrumbs))
-
 $this->breadcrumbs=array(
-	'Usuarios'=>array('index'),
-	$model->username=>array('view','id'=>$model->id),
-	Yii::t('app', 'Update'),
+	'Usuarios'=>array('admin'),
+	$model->nombre=>array('view','id'=>$model->id),
+	Yii::t('App', 'Update'),
 );
 
-if(!isset($this->menu))
 $this->menu=array(
-	array('label'=>Yii::t('app', 'List') . ' Usuario', 'url'=>array('index')),
-	array('label'=>Yii::t('app', 'Create') . ' Usuario', 'url'=>array('create')),
-	array('label'=>Yii::t('app', 'View') . ' Usuario', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>Yii::t('app', 'Manage') . ' Usuario', 'url'=>array('admin')),
+	array('label'=>Yii::t('App', 'List').' Usuario', 'url'=>array('index')),
+	array('label'=>Yii::t('App', 'Create').' Usuario', 'url'=>array('create')),
+	array('label'=>Yii::t('App', 'View').' Usuario', 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('App', 'Manage').' Usuario', 'url'=>array('admin')),
 );
 ?>
 
-<h1> <?php echo Yii::t('app', 'Update');?> Usuario #<?php echo $model->id; ?> </h1>
-<?php
-$this->renderPartial('_form', array(
-			'model'=>$model));
-?>
+<h1><?php  echo Yii::t('App', 'Update');?> Usuario <?php echo $model->id; ?></h1>
+
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

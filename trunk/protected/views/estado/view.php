@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Estados'=>array('index'),
+	'Estados'=>array('admin'),
 	$model->nombre,
 );
 
@@ -18,7 +18,11 @@ $this->menu=array(
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
-		'id',
+		array(
+            'name'=>'id',
+            'value'=>$model->id,
+            'htmlOptions'=>array('style'=>'width:50px'),
+        ),
 		'nombre',
 		'mensaje',
 		array(

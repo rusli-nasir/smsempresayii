@@ -1,12 +1,15 @@
 <?php
+if(isset($_GET['id_pregunta'])){
+$_SESSION["pregunta"]=$_GET['id_pregunta'];
+}
 $this->breadcrumbs=array(
-	'Respuestases'=>array('index'),
-	'Manage',
+	'Respuestas'=>array('admin'),
+	Yii::t('App', 'Manage'),
 );
 
 $this->menu=array(
-	array('label'=>'List Respuestas', 'url'=>array('index')),
-	array('label'=>'Create Respuestas', 'url'=>array('create')),
+	array('label'=>'Listado de Respuestas', 'url'=>array('admin')),
+	array('label'=>'Nueva Respuesta', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -23,14 +26,19 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Respuestases</h1>
+<h1>Respuestas de la pregunta:</h1>
+<br />
+<h2>
+<?php 
+		$condicion="id=".$_SESSION["pregunta"];
+		$pregunta=Preguntas::model()->find($condicion, 'pregunta'); 
+		echo $pregunta->pregunta;
+		?>	
+        <span style="font-size:12px">(<?php echo CHtml::link("Regresar", "../preguntas",array("class"=>"openNewWindow")); ?>)</span>
+</h2>
 
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-</p>
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
+<?php echo CHtml::link('Busqueda Avanzada','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
@@ -41,13 +49,11 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'id'=>'respuestas-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
-	'columns'=>array(
-		'id',
-		'respuesta',
-		'id_pregunta',
-		'sig_preg',
+	'columns'=>array(		
+		'respuesta',		
+		array ('name'=>'sig_preg','value'=>'$data->idSPregunta->pregunta','type'=>'text'),				
 		array(
-			'class'=>'CButtonColumn',
+			'class'=>'CButtonColumn','template' => '{update} {delete}',
 		),
 	),
 )); ?>

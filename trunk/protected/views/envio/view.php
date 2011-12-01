@@ -23,8 +23,13 @@ $this->menu=array(
             'value'=>$model->id,
             'htmlOptions'=>array('style'=>'width:50px'),
         ),
+		'grupos',
 		'asunto',
-		'tipoenvio',
+		'mensaje',
+		array(
+            'name'=>'tipoenvio',
+            'value'=>CHtml::value($model,'tipoenvio0.nombre'),
+        ),
 		array(
             'name'=>'fechaInicio',
             'value'=>'date("d.m.Y",strtotime($data->fechaInicio))',

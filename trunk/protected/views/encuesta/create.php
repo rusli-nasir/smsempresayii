@@ -1,15 +1,14 @@
 <?php
 $this->breadcrumbs=array(
-	'Encuestas'=>array('index'),
-	'Create',
+	'Encuestas'=>array('admin'),
+	Yii::t('App', 'Create'),
 );
 
 $this->menu=array(
-	array('label'=>'List Encuesta', 'url'=>array('index')),
-	array('label'=>'Manage Encuesta', 'url'=>array('admin')),
+	array('label'=>'Listado de Keywords', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create Encuesta</h1>
+<h1>Nuevo Keyword Encuesta</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Rols'=>array('admin'),
+	'Roles'=>array('admin'),
 	Yii::t('App', 'Create'),
 );
 

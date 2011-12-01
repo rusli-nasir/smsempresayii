@@ -7,7 +7,6 @@ $this->breadcrumbs = array(
 $this->menu = array(
     array('label' => Yii::t('App', 'Create') . ' Grupo', 'url' => array('create')),
     array('label' => Yii::t('App', 'Manage') . ' Grupo', 'url' => array('admin')),
-    array('label' => Yii::t('App', 'Assign') . ' Contacto', 'url' => array('/grupocontacto/create')),
 );
 ?>
 

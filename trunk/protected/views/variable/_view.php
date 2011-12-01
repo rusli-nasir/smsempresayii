@@ -12,8 +12,8 @@
 	<?php echo CHtml::encode($data->valor); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('fecha')); ?>:</b>
-	<?php echo CHtml::encode($data->fecha); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('createtime')); ?>:</b>
+	<?php echo CHtml::encode($data->createtime); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('activo')); ?>:</b>

@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Variables'=>array('index'),
+	'Variables'=>array('admin'),
 	Yii::t('App', 'Create'),
 );
 
