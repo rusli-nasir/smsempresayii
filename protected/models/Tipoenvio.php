@@ -6,9 +6,6 @@
  * The followings are the available columns in table '{{tipoenvio}}':
  * @property string $tipoid
  * @property string $nombre
- *
- * The followings are the available model relations:
- * @property Envio[] $envios
  */
 class Tipoenvio extends CActiveRecord
 {
@@ -79,9 +76,10 @@ class Tipoenvio extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('tipoid',$this->tipoid,true);
+
 		$criteria->compare('nombre',$this->nombre,true);
 
-		return new CActiveDataProvider($this, array(
+		return new CActiveDataProvider('Tipoenvio', array(
 			'criteria'=>$criteria,
 		));
 	}

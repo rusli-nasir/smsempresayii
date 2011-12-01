@@ -5,10 +5,7 @@
 	'method'=>'get',
 )); ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'id'); ?>
-		<?php echo $form->textField($model,'id',array('size'=>11,'maxlength'=>11)); ?>
-	</div>
+	
 
 	<div class="row">
 		<?php echo $form->label($model,'keyword'); ?>
@@ -35,13 +32,10 @@
 		<?php echo $form->textField($model,'mensaje2',array('size'=>60,'maxlength'=>160)); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->label($model,'id_usuario'); ?>
-		<?php echo $form->textField($model,'id_usuario',array('size'=>11,'maxlength'=>11)); ?>
-	</div>
+	
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton('Search'); ?>
+		<?php echo CHtml::submitButton('Buscar'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

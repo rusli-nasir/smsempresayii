@@ -4,8 +4,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Create Encuesta', 'url'=>array('create')),
-	array('label'=>'Manage Encuesta', 'url'=>array('admin')),
+	array('label'=>'Listado de Keywords', 'url'=>array('admin')),
+	array('label'=>'Nuevo keyword', 'url'=>array('create')),
 );
 ?>
 

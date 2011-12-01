@@ -13,21 +13,18 @@
 		<?php echo $form->labelEx($model,'nombre'); ?>
 		<?php echo $form->textField($model,'nombre',array('size'=>20,'maxlength'=>20)); ?>
 		<?php echo $form->error($model,'nombre'); ?>
-                
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'descripcion'); ?>
 		<?php echo $form->textArea($model,'descripcion'); ?>
 		<?php echo $form->error($model,'descripcion'); ?>
-                
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'activo'); ?>
 		<?php echo $form->checkBox($model,'activo'); ?>
 		<?php echo $form->error($model,'activo'); ?>
-                
 	</div>
 
 	<div class="row buttons">

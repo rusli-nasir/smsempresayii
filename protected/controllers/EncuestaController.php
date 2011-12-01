@@ -7,6 +7,8 @@ class EncuestaController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
+	
+	public $defaultAction='admin';
 
 	/**
 	 * @return array action filters
@@ -70,7 +72,7 @@ class EncuestaController extends Controller
 		{
 			$model->attributes=$_POST['Encuesta'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				 $this->redirect(array('admin'));
 		}
 
 		$this->render('create',array(
@@ -94,7 +96,7 @@ class EncuestaController extends Controller
 		{
 			$model->attributes=$_POST['Encuesta'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				 $this->redirect(array('admin'));
 		}
 
 		$this->render('update',array(
@@ -119,7 +121,7 @@ class EncuestaController extends Controller
 				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 		}
 		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			throw new CHttpException(400,Yii::t('Invalid request. Please do not repeat this request again.'));
 	}
 
 	/**
@@ -157,7 +159,7 @@ class EncuestaController extends Controller
 	{
 		$model=Encuesta::model()->findByPk($id);
 		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+			throw new CHttpException(404,Yii::t('The requested page does not exist.'));
 		return $model;
 	}
 

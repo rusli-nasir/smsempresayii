@@ -38,9 +38,44 @@ class Respuestas extends CActiveRecord
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
+		$link = mysql_connect("localhost", "admin", "Xurpas123");
+		mysql_select_db("sms_nicaragua",$link);
+
+$result1= mysql_query("SELECT 
+  `id`,
+  `id_encuesta`,
+  `pregunta`
+FROM 
+  `movistar_preguntas` where id=".$_SESSION["pregunta"], $link) or die(mysql_error());
+
+if (mysql_num_rows($result1)){ 
+while ($row1 = @mysql_fetch_array($result1)){
+	$pregunta = $row1['pregunta'].'\n';
+}
+}
+
+
+$result1= mysql_query("SELECT 
+  `id`,
+  `respuesta`,
+  `id_pregunta`,
+  `sig_preg`
+FROM 
+  `movistar_respuestas`
+where
+id_pregunta=".$_SESSION["pregunta"], $link) or die(mysql_error());
+$x=1;
+if (mysql_num_rows($result1)){ 
+while ($row1 = @mysql_fetch_array($result1)){
+	$pregunta = $pregunta.$x.'. '.$row1['respuesta'].', ';
+	$x++;
+}
+}
+
+$max=160-(strlen($pregunta)+3);
 		return array(
 			array('respuesta, id_pregunta', 'required'),
-			array('respuesta', 'length', 'max'=>160),
+			array('respuesta', 'length', 'max'=>$max),
 			array('id_pregunta, sig_preg', 'length', 'max'=>11),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -57,6 +92,7 @@ class Respuestas extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idPregunta' => array(self::BELONGS_TO, 'Preguntas', 'id_pregunta'),
+			'idSPregunta' => array(self::BELONGS_TO, 'Preguntas', 'sig_preg'),
 		);
 	}
 
@@ -68,8 +104,8 @@ class Respuestas extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'respuesta' => 'Respuesta',
-			'id_pregunta' => 'Id Pregunta',
-			'sig_preg' => 'Sig Preg',
+			'id_pregunta' => 'Pregunta',
+			'sig_preg' => 'Siguiente Pregunta',
 		);
 	}
 
@@ -83,14 +119,16 @@ class Respuestas extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('respuesta',$this->respuesta,true);
-		$criteria->compare('id_pregunta',$this->id_pregunta,true);
+		$criteria->with =array('idPregunta');
+		$criteria->condition = "id_pregunta=".$_SESSION["pregunta"];
+		$criteria->compare('idPregunta.pregunta', $this->id_pregunta, true);
+		$criteria->compare('respuesta',$this->respuesta,true);		
 		$criteria->compare('sig_preg',$this->sig_preg,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+	
+	
 }

@@ -21,15 +21,15 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'fecha'); ?>
+		<?php echo $form->label($model,'createtime'); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
               array(
                     'model'=>'$model',
-                    'name'=>'Variable[fecha]',
+                    'name'=>'Variable[createtime]',
                     'language'=>'es',
                     //'mode'=>'imagebutton',
                     //'theme'=>'smoothness',
-                    'value'=>$model->fecha,
+                    'value'=>$model->createtime,
                     /*'htmlOptions'=>array('size'=>10, 'style'=>'width:80px !important'),
 		            'options'=>array(
 		             	'showButtonPanel'=>true,

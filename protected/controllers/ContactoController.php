@@ -119,7 +119,17 @@ class ContactoController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionAdmin()
+	public function actionExportxls()
+	{
+		$model=new Contacto('search');
+		if(isset($_GET['Contacto']))
+			$model->attributes=$_GET['Contacto'];
+
+		$this->render('exportxls',array(
+			'model'=>$model,
+		));
+	}
+        public function actionAdmin()
 	{
 		$model=new Contacto('search');
 		if(isset($_GET['Contacto']))

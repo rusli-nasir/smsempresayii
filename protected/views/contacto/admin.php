@@ -7,6 +7,7 @@ $this->breadcrumbs = array(
 $this->menu = array(
     array('label' => Yii::t('App', 'List') . ' Contacto', 'url' => array('admin')),
     array('label' => Yii::t('App', 'Create') . ' Contacto', 'url' => array('create')),
+    array('label' => Yii::t('App', 'Export') . ' a Excel', 'url' => array('exportxls')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -16,7 +17,7 @@ $('.search-button').click(function(){
 });
 $('.search-form form').submit(function(){
 	$.fn.yiiGridView.update('contacto-grid', {
-		data: $(this).serialize()
+		data: $(this).serialize(),
 	});
         $('.cgrupo').corner('3px');
 	return false;
@@ -40,6 +41,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'contacto-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
+    'afterAjaxUpdate'=> 'function(){$(\'.cgrupo\').corner(\'3px\');}',
     'columns' => array(
         array(
             'class' => 'CCheckBoxColumn',

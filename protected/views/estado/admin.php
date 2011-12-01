@@ -1,17 +1,17 @@
 <?php
 $this->breadcrumbs=array(
-	'Estados'=>array('index'),
+	'Estados'=>array('admin'),
 	Yii::t('App', 'Manage'),
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('App', 'List').' Estado', 'url'=>array('index')),
+	array('label'=>Yii::t('App', 'List').' Estado', 'url'=>array('admin')),
 	array('label'=>Yii::t('App', 'Create').' Estado', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
-	$('.search-form').toggle();
+	$('.search-form').slideToggle();
 	return false;
 });
 $('.search-form form').submit(function(){
@@ -25,11 +25,6 @@ $('.search-form form').submit(function(){
 
 <h1><?php  echo Yii::t('App', 'Manage');?> Estados</h1>
 
-<p>
-<?php  echo Yii::t('App', 'You may optionally enter a comparison operator');?> (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-<?php  echo Yii::t('App', 'or');?> <b>=</b>) <?php  echo Yii::t('App', 'at the beginning of each of your search values to specify how the comparison should be done');?>.
-</p>
-
 <?php echo CHtml::link(Yii::t('App','Advanced Search'),'#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
@@ -42,7 +37,14 @@ $('.search-form form').submit(function(){
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		'id',
+            array(
+              'class'   =>'CCheckBoxColumn',
+            ),
+		array(
+            'name'=>'id',
+            'value'=>$model->id,
+            'htmlOptions'=>array('style'=>'width:50px'),
+        ),
 		'nombre',
 		'mensaje',
 		array(
@@ -52,6 +54,7 @@ $('.search-form form').submit(function(){
         ),
 		array(
 			'class'=>'CButtonColumn',
+                        'template' => '{update} {delete}',
 		),
 	),
 )); ?>

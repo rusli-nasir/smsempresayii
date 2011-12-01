@@ -1,19 +1,19 @@
 <?php
 $this->breadcrumbs=array(
-	'Infosms'=>array('index'),
+	'Infosms'=>array('admin'),
 	$model->id,
 );
 
 $this->menu=array(
-	array('label'=>'List Infosms', 'url'=>array('index')),
-	array('label'=>'Create Infosms', 'url'=>array('create')),
-	array('label'=>'Update Infosms', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Infosms', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Infosms', 'url'=>array('admin')),
+	array('label'=>'Listado de Keywords', 'url'=>array('admin')),
+	array('label'=>'Nuevo Keyword', 'url'=>array('create')),
+	array('label'=>'Actualizar Keywords', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Eliminar Keyword', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Esta seguro que desea eliminar este Keyword?')),
+
 );
 ?>
 
-<h1>View Infosms #<?php echo $model->id; ?></h1>
+<h1>Infosms #<?php echo $model->id; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

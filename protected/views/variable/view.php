@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Variables'=>array('index'),
+	'Variables'=>array('admin'),
 	$model->nombre,
 );
 
@@ -18,10 +18,17 @@ $this->menu=array(
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
-		'id',
+		array(
+            'name'=>'id',
+            'value'=>$model->id,
+            'htmlOptions'=>array('style'=>'width:50px'),
+        ),
 		'nombre',
 		'valor',
-		'fecha',
+		array(
+            'name'=>'createtime',
+            'value'=>'date("d.m.Y h:i a",strtotime($data->createtime))',
+        ),
 		array(
             'name'=>'activo',
             'value'=>$model->activo?Yii::t("App","Yes"):Yii::t("App","No"),

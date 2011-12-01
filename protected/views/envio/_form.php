@@ -10,17 +10,27 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'grupos'); ?>
+		<?php echo $form->textField($model,'grupos',array('size'=>60,'maxlength'=>500)); ?>
+		<?php echo $form->error($model,'grupos'); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'asunto'); ?>
 		<?php echo $form->textField($model,'asunto',array('size'=>60,'maxlength'=>150)); ?>
 		<?php echo $form->error($model,'asunto'); ?>
-                
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'mensaje'); ?>
+		<?php echo $form->textField($model,'mensaje',array('size'=>60,'maxlength'=>200)); ?>
+		<?php echo $form->error($model,'mensaje'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'tipoenvio'); ?>
-		<?php echo $form->textField($model,'tipoenvio',array('size'=>16,'maxlength'=>16)); ?>
+		<?php echo CHtml::activeDropDownList($model,'tipoenvio',CHtml::listData(Tipoenvio::model()->findAll(), 'tipoid', 'nombre')); ?>
 		<?php echo $form->error($model,'tipoenvio'); ?>
-                
 	</div>
 
 	<div class="row">
@@ -41,7 +51,6 @@
               		)
              ); ?>
 		<?php echo $form->error($model,'fechaInicio'); ?>
-                
 	</div>
 
 	<div class="row">
@@ -62,14 +71,12 @@
               		)
              ); ?>
 		<?php echo $form->error($model,'fechaFin'); ?>
-                
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'activo'); ?>
 		<?php echo $form->checkBox($model,'activo'); ?>
 		<?php echo $form->error($model,'activo'); ?>
-                
 	</div>
 
 	<div class="row buttons">

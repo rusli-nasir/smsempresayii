@@ -94,15 +94,27 @@ class RolController extends Controller
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
+                    try{
 			// we only allow deletion via POST request
-			$this->loadModel()->delete();
+			$delete=$this->loadModel()->delete();
 
+                        if(!$delete){
+                            throw new CHttpException(404,Yii::t('App','Hubo un error al eliminar el registro.'));
+                        }
+                    }catch(Exception $ex){
+                        //if($ex->getCode()==23000){
+                            throw new CHttpException(404,'Debe eliminar los usuarios asociados primero');
+                        //}
+                        //
+                    }
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_POST['ajax']))
 				$this->redirect(array('admin'));
 		}
-		else
-			throw new CHttpException(400,Yii::t('App','Invalid request. Please do not repeat this request again.'));
+		else{
+                    throw new CHttpException(404,Yii::t('App','Invalid request. Please do not repeat this request again.'));
+                }
+			//throw new CHttpException(400,Yii::t('App','Invalid request. Please do not repeat this request again.'));
 	}
 
 	/**

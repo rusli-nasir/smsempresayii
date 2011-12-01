@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Estados'=>array('index'),
+	'Estados'=>array('admin'),
 	$model->nombre=>array('view','id'=>$model->id),
 	Yii::t('App', 'Update'),
 );

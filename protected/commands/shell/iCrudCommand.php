@@ -34,8 +34,19 @@ class iCrudCommand extends CrudCommand {
             $model=CActiveRecord::model($modelClass);
             $table=$model->getTableSchema();
             $fk = $table->foreignKeys[$column->name];
-            $fmodel=CActiveRecord::model(ucfirst($fk[0]));
-            $modelTable = ucfirst($fmodel->tableName());
+
+            if(strpos($fk[0], '_')!==false){
+                $ptable=explode('_', $fk[0]);
+                $prexTable=$ptable[0];
+                $nameTable=$ptable[1];
+                $fmodel=CActiveRecord::model(ucfirst($nameTable));
+                $modelTable = ucfirst($nameTable);
+            }else{
+                die('Error');
+                $fmodel=CActiveRecord::model(ucfirst($fk[0]));
+                $modelTable = ucfirst($fmodel->tableName());
+            }
+
             $ftable=$fmodel->getTableSchema();
             $fcolumns=$fmodel->attributeNames();
 
@@ -43,10 +54,13 @@ class iCrudCommand extends CrudCommand {
                 return("echo CHtml::activeDropDownList(\$model,'{$column->name}',CHtml::listData({$modelTable}::model()->findAll(), '{$ftable->primaryKey}', '{$fcolumns[1]}'),array('prompt'=>Yii::t('App', 'Choose...')))");
             return("echo CHtml::activeDropDownList(\$model,'{$column->name}',CHtml::listData({$modelTable}::model()->findAll(), '{$ftable->primaryKey}', '{$fcolumns[1]}'))");
         }
-        else if(strtoupper($column->dbType) == 'TINYINT(1)' OR strtoupper($column->dbType) == 'BIT') {
+        else if(strtoupper($column->dbType) == 'TINYINT(1)'
+                || strtoupper($column->dbType) == 'BIT'
+		|| strtoupper($column->dbType) == 'BOOL'
+		|| strtoupper($column->dbType) == 'BOOLEAN') {
             return "echo \$form->checkBox(\$model,'{$column->name}')";
         }
-        else if(strtoupper($column->dbType) == 'DATE') {
+        else if(strtoupper($column->dbType) == 'DATE'||strtoupper($column->dbType) == 'TIMESTAMP') {
             return <<<EOD
 \$this->widget('zii.widgets.jui.CJuiDatePicker',
               array(
@@ -64,7 +78,7 @@ class iCrudCommand extends CrudCommand {
               		)
              )
 EOD;
-        }  elseif (strtolower($column->name)=='descripcion') {
+        }  elseif (strtolower($column->name)=='descripcion'||stripos($column->dbType, 'text') !== false) {
 
             return "echo \$form->textArea(\$model,'{$column->name}')";
         }
@@ -82,8 +96,17 @@ EOD;
 				$model=CActiveRecord::model($modelClass);
 				$table=$model->getTableSchema();
 				$fk = $table->foreignKeys[$column->name];
-				$fmodel=CActiveRecord::model(ucfirst($fk[0]));
-				$modelTable = ucfirst($fmodel->tableName());
+				if(strpos($fk[0], '_')!==false){
+                                    $ptable=explode('_', $fk[0]);
+                                    $prexTable=$ptable[0];
+                                    $nameTable=$ptable[1];
+                                    $fmodel=CActiveRecord::model(ucfirst($nameTable));
+                                    $modelTable = ucfirst($nameTable);
+                                }else{
+                                    die("Error");
+                                    $fmodel=CActiveRecord::model(ucfirst($fk[0]));
+                                    $modelTable = ucfirst($fmodel->tableName());
+                                }
 				//$ftable=$fmodel->getTableSchema();
 				$fcolumns=$fmodel->attributeNames();
 				//$rel = $model->getActiveRelation($column->name);

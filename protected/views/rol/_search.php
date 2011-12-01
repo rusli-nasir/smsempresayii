@@ -21,6 +21,16 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->label($model,'modulos'); ?>
+		<?php echo $form->textField($model,'modulos',array('size'=>60,'maxlength'=>500)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'actions'); ?>
+		<?php echo $form->textField($model,'actions',array('size'=>50,'maxlength'=>50)); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->label($model,'activo'); ?>
 		<?php echo $form->checkBox($model,'activo'); ?>
 	</div>

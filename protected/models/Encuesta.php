@@ -42,6 +42,8 @@ class Encuesta extends CActiveRecord
 		return array(
 			array('keyword, id_usuario', 'required'),
 			array('keyword', 'length', 'max'=>15),
+			array('keyword', 'unique', 'className' => 'Infosms', 'attributeName' => 'keyword'),
+			array('keyword', 'unique', 'className' => 'Encuesta', 'attributeName' => 'keyword'),
 			array('descripcion', 'length', 'max'=>100),
 			array('id_usuario', 'length', 'max'=>11),
 			// The following rule is used by search().
@@ -86,12 +88,10 @@ class Encuesta extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-
-		$criteria->compare('id',$this->id,true);
+		$criteria->condition = "id<>0";
 		$criteria->compare('keyword',$this->keyword,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
-		$criteria->compare('fecha_creacion',$this->fecha_creacion,true);
-		$criteria->compare('id_usuario',$this->id_usuario,true);
+		$criteria->compare('fecha_creacion',$this->fecha_creacion,true);		
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

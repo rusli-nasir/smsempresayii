@@ -5,13 +5,13 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="note">Los campos con <span class="required">*</span> son requeridos.</p> 
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
+	<div class="row" style="display:none">
 		<?php echo $form->labelEx($model,'id_encuesta'); ?>
-		<?php echo $form->textField($model,'id_encuesta',array('size'=>11,'maxlength'=>11)); ?>
+		<?php echo $form->textField($model,'id_encuesta',array('size'=>11,'maxlength'=>11, 'value'=>$_SESSION["encuesta"]));?>
 		<?php echo $form->error($model,'id_encuesta'); ?>
 	</div>
 
@@ -22,7 +22,8 @@
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::link($model->isNewRecord ? 'Guardar y Agregar otra Pregunta' : 'Actualizar', 'javascript:;', array('submit' => '', 'class' => 'positive')); ?>
+        <?php echo CHtml::link(Yii::t('App', 'Cancel'), array('admin'), array('class' => 'negative')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

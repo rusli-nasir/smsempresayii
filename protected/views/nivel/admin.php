@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Nivels'=>array('admin'),
+	'Niveles'=>array('admin'),
 	Yii::t('App', 'Manage'),
 );
 
@@ -23,7 +23,7 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1><?php  echo Yii::t('App', 'Manage');?> Nivels</h1>
+<h1><?php  echo Yii::t('App', 'Manage');?> Niveles</h1>
 
 <?php echo CHtml::link(Yii::t('App','Advanced Search'),'#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
@@ -37,7 +37,14 @@ $('.search-form form').submit(function(){
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		'id',
+            array(
+              'class'   =>'CCheckBoxColumn',
+            ),
+		array(
+            'name'=>'id',
+            'value'=>$model->id,
+            'htmlOptions'=>array('style'=>'width:50px'),
+        ),
 		'nombre',
 		'descripcion',
 		array(
@@ -47,6 +54,7 @@ $('.search-form form').submit(function(){
         ),
 		array(
 			'class'=>'CButtonColumn',
+                        'template' => '{update} {delete}',
 		),
 	),
 )); ?>

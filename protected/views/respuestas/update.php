@@ -1,18 +1,16 @@
 <?php
 $this->breadcrumbs=array(
-	'Respuestases'=>array('index'),
+	'Respuestases'=>array('admin'),
 	$model->id=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('App', 'Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List Respuestas', 'url'=>array('index')),
-	array('label'=>'Create Respuestas', 'url'=>array('create')),
-	array('label'=>'View Respuestas', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Respuestas', 'url'=>array('admin')),
+	array('label'=>'Listado de Preguntas', 'url'=>array('admin')),
+	array('label'=>'Nueva Pregunta', 'url'=>array('create')),	
 );
 ?>
 
-<h1>Update Respuestas <?php echo $model->id; ?></h1>
+<h1>Actualizar Respuesta <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

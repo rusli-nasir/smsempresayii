@@ -23,15 +23,14 @@ foreach($columns as $column)
 {
 	if($column->isPrimaryKey)
 		continue;
-        if(!$column->isForeignKey
-			&& $column->name != 'createtime'
+        if($column->name != 'createtime'
 			&& $column->name != 'updatetime'
-			&& $column->name != 'timestamp') {	
+			&& $column->name != 'timestamp') {
 ?>
 	<div class="row">
 		<?php echo "<?php echo ".$this->generateActiveLabel($modelClass,$column)."; ?>\n"; ?>
 		<?php echo "<?php ".$this->generateActiveField($modelClass,$column)."; ?>\n"; ?>
-		<?php echo "<?php echo \$form->error(\$model,'{$column->name}'); ?>\n"; ?>                
+		<?php echo "<?php echo \$form->error(\$model,'{$column->name}'); ?>\n"; ?>
 	</div>
 
 <?php

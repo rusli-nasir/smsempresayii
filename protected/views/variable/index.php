@@ -4,8 +4,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('App', 'Create').' Variable', 'url'=>array('create')),
-	array('label'=>Yii::t('App', 'Manage').' Variable', 'url'=>array('admin')),
+	array('label'=>'Create Variable', 'url'=>array('create')),
+	array('label'=>'Manage Variable', 'url'=>array('admin')),
 );
 ?>
 

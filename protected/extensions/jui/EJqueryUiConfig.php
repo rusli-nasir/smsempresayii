@@ -72,7 +72,7 @@ class EJqueryUiConfig
    // Constants
    //***************************************************************************
 
-   const DEFAULT_THEME = 'base';
+   const DEFAULT_THEME = 'redmond';
    const DEFAULT_COMPRESSION = 'minified';
    const DEFAULT_BUNDLED = true;
 
@@ -178,7 +178,7 @@ class EJqueryUiConfig
     */
    public function getTheme()
    {
-      if ($this->theme === null) 
+      if ($this->theme === null)
          $this->theme = self::DEFAULT_THEME;
       return $this->theme;
    }
@@ -204,7 +204,7 @@ class EJqueryUiConfig
     */
    public function getCompression()
    {
-      if ($this->compression === null)    
+      if ($this->compression === null)
          $this->compression = self::DEFAULT_COMPRESSION;
       return $this->compression;
    }

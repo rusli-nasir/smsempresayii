@@ -1,12 +1,12 @@
 <?php
 $this->breadcrumbs=array(
-	'Encuestas'=>array('index'),
-	'Manage',
+	'Encuestas'=>array('Admin'),
+	Yii::t('App', 'Manage'),
 );
 
 $this->menu=array(
-	array('label'=>'List Encuesta', 'url'=>array('index')),
-	array('label'=>'Create Encuesta', 'url'=>array('create')),
+	array('label'=>'Listado de Keywords', 'url'=>array('index')),
+	array('label'=>'Nuevo Keyword', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -23,14 +23,11 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Encuestas</h1>
+<h1>Encuestas</h1>
 
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-</p>
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
+
+<?php echo CHtml::link('Busqueda Avanzada','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
@@ -41,14 +38,22 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'id'=>'encuesta-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
-	'columns'=>array(
-		'id',
+	'columns'=>array(		
 		'keyword',
 		'descripcion',
 		'fecha_creacion',
-		'id_usuario',
+		//'id_usuario',
 		array(
-			'class'=>'CButtonColumn',
+                        'class'=>'CDataColumn',
+                        'type'=>'raw',
+                        'header'=>'Preguntas',
+                        'value'=>'CHtml::link("Detalle", "../preguntas?id_encuesta=".$data["id"],array("class"=>"openNewWindow"))',
+                        
+                        
+                ),		
+		array(
+			'class'=>'CButtonColumn','template' => '{update} {delete}',
 		),
+		
 	),
 )); ?>

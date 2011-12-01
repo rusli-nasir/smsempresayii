@@ -8,9 +8,6 @@
  * @property string $nombre
  * @property string $descripcion
  * @property integer $activo
- *
- * The followings are the available model relations:
- * @property Usuario[] $usuarios
  */
 class Nivel extends CActiveRecord
 {
@@ -67,9 +64,9 @@ class Nivel extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
+			'id' => 'Id',
 			'nombre' => 'Nombre',
-			'descripcion' => 'Descripcion',
+			'descripcion' => 'Descripción',
 			'activo' => 'Activo',
 		);
 	}
@@ -86,11 +83,14 @@ class Nivel extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
+
 		$criteria->compare('nombre',$this->nombre,true);
+
 		$criteria->compare('descripcion',$this->descripcion,true);
+
 		$criteria->compare('activo',$this->activo);
 
-		return new CActiveDataProvider($this, array(
+		return new CActiveDataProvider('Nivel', array(
 			'criteria'=>$criteria,
 		));
 	}

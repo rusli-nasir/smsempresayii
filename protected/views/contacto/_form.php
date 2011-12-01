@@ -27,7 +27,7 @@
 
 		<?php //print_r(explode('|',$model->grupoInicial)); ?>
 		<?php echo $form->labelEx($model,'grupos'); ?>
-                <?php echo CHtml::dropDownList('cbogrupos',explode('|',$model->grupoInicial),CHtml::listData(Grupo::model()->findAll(), 'nombre', 'nombre'),array('multiple'=>'multiple','class'=>'cbogrupo','data-placeholder'=>'Seleccione grupos...')); ?>
+                <?php echo CHtml::dropDownList('cbogrupos',explode('|',rtrim($model->grupoInicial)),CHtml::listData(Grupo::model()->findAll(), 'nombre', 'nombre'),array('multiple'=>'multiple','class'=>'cbogrupo','data-placeholder'=>'Seleccione grupos...')); ?>
 		<?php echo $form->hiddenField($model,'grupoInicial',array('size'=>60,'maxlength'=>100)); ?>
 		<?php echo $form->error($model,'grupos'); ?>
 
@@ -57,7 +57,13 @@
                     "manageGrupo", "jQuery().ready(function(){
                         $('select.cbogrupo').chosen();
                         $('select.cbogrupo').change(function(){
-                            $('#Contacto_grupoInicial').val($(this).val().join('|'));
+                            if($.trim($(this).val())==''){
+                                $('.chzn-container').remove();
+                                $('#Contacto_grupoInicial').val('');
+                                $('select.cbogrupo').removeClass('chzn-done').chosen();
+                            }else{
+                                $('#Contacto_grupoInicial').val($(this).val().join('|'));
+                            }
                         });
             });",CClientScript::POS_END);
 ?>

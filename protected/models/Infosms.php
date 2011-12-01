@@ -41,6 +41,8 @@ class Infosms extends CActiveRecord
 		return array(
 			array('keyword, mensaje1, id_usuario', 'required'),
 			array('keyword', 'length', 'max'=>15),
+			array('keyword', 'unique', 'className' => 'Infosms', 'attributeName' => 'keyword'),
+			array('keyword', 'unique', 'className' => 'Encuesta', 'attributeName' => 'keyword'),
 			array('descripcion', 'length', 'max'=>100),
 			array('mensaje1, mensaje2', 'length', 'max'=>160),
 			array('id_usuario', 'length', 'max'=>11),
@@ -88,13 +90,13 @@ class Infosms extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
+		
 		$criteria->compare('keyword',$this->keyword,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('fecha_creacion',$this->fecha_creacion,true);
 		$criteria->compare('mensaje1',$this->mensaje1,true);
 		$criteria->compare('mensaje2',$this->mensaje2,true);
-		$criteria->compare('id_usuario',$this->id_usuario,true);
+		
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

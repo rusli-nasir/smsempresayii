@@ -12,6 +12,14 @@
 	<?php echo CHtml::encode($data->descripcion); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('modulos')); ?>:</b>
+	<?php echo CHtml::encode($data->modulos); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('actions')); ?>:</b>
+	<?php echo CHtml::encode($data->actions); ?>
+	<br />
+
 	<b><?php echo CHtml::encode($data->getAttributeLabel('activo')); ?>:</b>
 	<?php echo CHtml::encode($data->activo); ?>
 	<br />
