@@ -36,7 +36,27 @@ class UsuarioController extends Controller {
             'model' => $this->loadModel(),
         ));
     }
+    /**
+     * Enviar password para webservice.
+     */
+    public function actionSendKeybyEmail() {
+        $usuario = $this->loadModel();
+        $key=sha1($usuario->username."|".$usuario->password);
+        $headers = "From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
+        $msg="Estimado usuario,
 
+La llave de acceso es la clave de verificación que comprueba su usuario y contraseña. Una vez comprobado, podra tener acceso a los servicios web que ofrece ".Yii::app()->name.". La llave es la siguiente: ".$key."
+
+Si tiene dudas al respecto por favor comuniquese con nosotros.";
+        if(mail($usuario->email, "Llave de acceso", $msg, $headers)){
+            Yii::app()->user->setFlash('success', 'Su clave de acceso ha sido enviada.');
+            $this->redirect('/usuario/admin');
+        }else{
+            Yii::app()->user->setFlash('error', 'El envío de correo falló.');
+            $this->refresh();
+        }
+
+    }
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.

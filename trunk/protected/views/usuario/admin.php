@@ -33,7 +33,23 @@ $('.search-form form').submit(function(){
     ));
     ?>
 </div><!-- search-form -->
-
+<div id="msg">
+    <?php if (Yii::app()->user->hasFlash('success')): ?>
+        <div class="flash-success">
+            <?php echo Yii::app()->user->getFlash('success'); ?>
+        </div>
+    <?php endif; ?>
+    <?php if (Yii::app()->user->hasFlash('notice')): ?>
+        <div class="flash-notice">
+            <?php echo Yii::app()->user->getFlash('notice'); ?>
+        </div>
+    <?php endif; ?>
+    <?php if (Yii::app()->user->hasFlash('error')): ?>
+        <div class="flash-error">
+            <?php echo Yii::app()->user->getFlash('error'); ?>
+        </div>
+    <?php endif; ?>
+</div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'usuario-grid',
@@ -63,7 +79,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'value' => '$data->username',
             'htmlOptions' => array('style' => 'width:80px;text-align:center;'),
         ),
-        'email',
+        /*'email',*/
         array(
           'name'=>'rolid',
           'value'=>'$data->rol->rol',
@@ -93,6 +109,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
           'htmlOptions'=>array('style'=>'width:50px'),
           ),
          */
+         array(
+            'type' => 'raw',
+            'value' => 'CHtml::link("Enviar Clave","#", array("submit"=>array(\'/usuario/sendkeybyemail\', \'id\'=>$data->id),"class"=>"viewsms"))',
+             'visible' => (Yii::app()->user->nivel == 1),
+            'htmlOptions'=>array('style'=>'width:65px;text-align:center;'),
+        ),
         array(
             'class' => 'CButtonColumn',
             'template' => '{update} {delete}',
