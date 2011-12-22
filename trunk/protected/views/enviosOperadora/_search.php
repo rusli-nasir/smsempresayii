@@ -2,14 +2,9 @@
 <?php 
 $cs = Yii::app()->getClientScript();
 $form=$this->beginWidget('CActiveForm', array(
-	'action'=>Yii::app()->createUrl('../EnviosFiltrados/'),
+	'action'=>Yii::app()->createUrl($this->route),
 	'method'=>'post',
 )); ?>
-
-<div class="row" style="text-align:justify">
-                <?php echo CHtml::dropDownList('cbogrupos',array(),CHtml::listData(Grupo::model()->findAll(), 'grupoid', 'nombre'),array('multiple'=>'multiple','class'=>'cbogrupo','data-placeholder'=>'Seleccione grupos...')); ?>
-                <input type="hidden" id="grupoInicial" name="grupoInicial" />	
-</div>
 
 <div class="row jui"> 
 <strong>Desde:&nbsp;&nbsp;</strong>

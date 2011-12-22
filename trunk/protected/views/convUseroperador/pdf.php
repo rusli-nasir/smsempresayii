@@ -1,5 +1,5 @@
 <? $pdf = Yii::createComponent('application.extensions.MPDF53.mpdf');
-$dataProvider = $_SESSION['datos_filtrados']->getData();
+$dataProvider = $_SESSION['datos_filtrados_conv']->getData();
 $contador=count($dataProvider);
 $html.='
 <style>
@@ -91,12 +91,13 @@ Total Resultados: '.$contador.'
 width="100%" border="0">
 <thead>
 <tr class="principal">
-<th class="principal" width="7%">&nbsp;FECHA</td>
-<th class="principal" width="7%">&nbsp;USUARIO</td>
-<th class="principal" width="19%">&nbsp;TELEFONO</td>
-<th class="principal" width="10%">&nbsp;OPERADORA</td>
-<th class="principal" width="9%">&nbsp;MENSAJE</td>
-<th class="principal" width="25%">&nbsp;ESTADO</td>
+<th class="principal">&nbsp;Asunto</td>
+<th class="principal">&nbsp;Hora de Envio</td>
+<th class="principal">&nbsp;Fecha de Inicio</td>
+<th class="principal">&nbsp;Fecha de Fin</td>
+<th class="principal">&nbsp;Enviados</td>
+<th class="principal">&nbsp;No Enviados</td>
+<th class="principal">&nbsp;Pendientes</td>
 </tr>
 </thead>';
 $i=0;
@@ -104,21 +105,18 @@ $val=count($dataProvider);
 while($i<$val){
 $html.='
 <tr class="odd">
-<td class="odd" width="7%">&nbsp;'.$dataProvider[$i]
-["Fecha"].'</td>
-<td class="odd" width="7%">&nbsp;'.$dataProvider[$i]
-["Usuario"].'</td>
-<td class="odd" width="19%">&nbsp;'.$dataProvider[$i]["Telefono"].'</td>
-<td class="odd" width="10%">&nbsp;'.$dataProvider[$i]["Operadora"].'</td>
-<td class="odd" width="9%">&nbsp;'.$dataProvider[$i]
-["Mensaje"].'</td>
-<td class="odd" width="25%">&nbsp;'.$dataProvider[$i]
-["Estado"].'</td>
+<td class="odd">&nbsp;'.$dataProvider[$i]["asunto"].'</td>
+<td class="odd">&nbsp;'.$dataProvider[$i]["horaenvio"].'</td>
+<td class="odd">&nbsp;'.$dataProvider[$i]["fecha"].'</td>
+<td class="odd">&nbsp;'.$dataProvider[$i]["fecha2"].'</td>
+<td class="odd">&nbsp;'.$dataProvider[$i]["Enviado"].'</td>
+<td class="odd">&nbsp;'.$dataProvider[$i]["No_Enviados"].'</td>
+<td class="odd">&nbsp;'.$dataProvider[$i]["Pendientes"].'</td>
 ';
 $html.='</tr>'; $i++;
 }
-$html.='<tfoot><tr><th scope="row">Total</th><td colspan="5">'.$contador.' envios</td></tr></tfoot></table>';
+$html.='<tfoot><tr><th scope="row">Total</th><td colspan="6">'.$contador.' envios</td></tr></tfoot></table>';
 $mpdf=new mPDF('win-1252','LETTER-L','','',9,9,24,10,5,5);
 $mpdf->WriteHTML($html);
-$mpdf->Output('Reporte_Histórico_Envíos.pdf','D');
+$mpdf->Output('Reporte_Conversaciones.pdf','D');
 exit; ?>

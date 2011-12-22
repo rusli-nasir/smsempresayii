@@ -84,7 +84,7 @@ tbody tr:hover {
 		background:#fafafa
 }
 </style>
-<div style="width:100%; text-align:center; font-family:\'MS Serif\', \'New York\', serif"><h2>Envíos Instantáneos</h2></div>
+<div style="width:100%; text-align:center; font-family:\'MS Serif\', \'New York\', serif"><h2>Envíos Notificaciones</h2></div>
 <br />
 Total Resultados: '.$contador.'
 <table class="detail-view2" repeat_header="1" cellpadding="1" cellspacing="1"
@@ -120,5 +120,5 @@ $html.='</tr>'; $i++;
 $html.='<tfoot><tr><th scope="row">Total</th><td colspan="5">'.$contador.' envios</td></tr></tfoot></table>';
 $mpdf=new mPDF('win-1252','LETTER-L','','',9,9,24,10,5,5);
 $mpdf->WriteHTML($html);
-$mpdf->Output('Reporte_Histórico_Envíos.pdf','D');
+$mpdf->Output('Reporte_Histórico_Notificaciones.pdf','D');
 exit; ?>
