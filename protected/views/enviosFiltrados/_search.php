@@ -2,7 +2,7 @@
 <?php 
 $cs = Yii::app()->getClientScript();
 $form=$this->beginWidget('CActiveForm', array(
-	'action'=>Yii::app()->createUrl('../EnviosFiltrados/'),
+	'action'=>Yii::app()->createUrl($this->route),
 	'method'=>'post',
 )); ?>
 

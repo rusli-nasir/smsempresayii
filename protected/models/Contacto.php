@@ -111,7 +111,7 @@ class Contacto extends CActiveRecord {
         $criteria->compare('nombres', $this->nombres, true);
         $criteria->compare('telefono', $this->telefono, true);
         $criteria->compare('c.createtime', $this->createtime, true);
-        $criteria->compare('g.grupoid', $this->grupos, true);
+        $criteria->compare('g.grupoid', $this->grupos, false);
         $criteria->compare('c.activo', $this->activo);
 
         return new CActiveDataProvider($this, array(

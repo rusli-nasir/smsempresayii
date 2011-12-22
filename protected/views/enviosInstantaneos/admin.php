@@ -5,23 +5,17 @@ $cs=Yii::app()->clientScript;
 $cs->registerScriptFile(Yii::app()->baseUrl . '/js/highcharts.js', CClientScript::POS_HEAD);
 
 $this->breadcrumbs=array(
-	'Envios Instantaneos'=>array('/enviosInstantaneos'),
+	'Envíos Instantáneos'=>array('/enviosInstantaneos'),
 	'Reporte',
 );
 
 $this->menu=array(
 array('label'=>'Exportar a PDF', 'url'=>array('pdf')),
-//array('label'=>'Exportar a Excel', 'url'=>array('excel')),
+array('label'=>'Exportar a Excel', 'url'=>array('excel')),
 );
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
 	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('infosms-grid', {
-		data: $(this).serialize()
-	});
 	return false;
 });
 ");
@@ -30,10 +24,10 @@ $('.search-form form').submit(function(){
 
 
 
-<h1>Envios Instantaneos</h1>             
-<?php echo CHtml::link('Busqueda Avanzada','#',array('class'=>'search-button')); ?>
+<h1>Envíos Instantáneos </h1>             
+<?php echo CHtml::link('Búsqueda Avanzada','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
-<?php include('_search.php'); ?>
+<?php $this->renderPartial('_search'); ?>
 </div><!-- search-form -->
 <!--GRAFICOS-->
 <script type="text/javascript">
@@ -47,7 +41,7 @@ $('.search-form form').submit(function(){
                         spacingRight: 20
                     },
                     title: {
-                        text: 'Historico de Envios de SMS'
+                        text: 'Histórico de Envíos de SMS'
                     },
                     subtitle: {
                         text: document.ontouchstart === undefined ?
@@ -63,7 +57,7 @@ $('.search-form form').submit(function(){
                     },
                     yAxis: {
                         title: {
-                            text: 'Cantidad de Envios'
+                            text: 'Cantidad de Envíos'
                         },
                         min: 2.6,
                         startOnTick: false,
@@ -111,16 +105,26 @@ $('.search-form form').submit(function(){
 				
                     series: [{
                             type: 'area',
-                            name: 'Cantidad de Envios',
+                            name: 'Cantidad de Envíos',
                             pointInterval: 24 * 3600 * 1000,
 						
 <?php
 $link = mysql_connect("localhost", "admin", "Xurpas123");
-mysql_select_db("sms_nicaragua", $link);
+$bd=explode(';', Yii::app()->db->connectionString);
+$bd2=explode('=', $bd[1]);
+mysql_select_db($bd2[1], $link);
 
-$result1 = mysql_query("select DATE_FORMAT(createtime, '%Y-%m-%d') as fecha, count(*) as conteo
-from `movistar_mensaje`
+if(isset(Yii::app()->user->nivel) && Yii::app()->user->nivel==2){
+	$result1 = mysql_query("select DATE_FORMAT(createtime, '%Y-%m-%d') as fecha, count(*) as conteo
+from `".Yii::app()->db->tablePrefix."mensaje`
+where operadoraid=".Yii::app()->user->dependid."
 group by DATE_FORMAT(createtime, '%Y-%m-%d')", $link) or die(mysql_error());
+}
+else{
+$result1 = mysql_query("select DATE_FORMAT(createtime, '%Y-%m-%d') as fecha, count(*) as conteo
+from `".Yii::app()->db->tablePrefix."mensaje`
+group by DATE_FORMAT(createtime, '%Y-%m-%d')", $link) or die(mysql_error());
+}
 
 //$_GET['fecha1']=isset($_GET['fecha1'])?date("Y-m-d",strtotime($_GET['fecha1'])):"";
 //$_GET['fecha2']=isset($_GET['fecha2'])?date("Y-m-d",strtotime($_GET['fecha2'])):"";
