@@ -7,7 +7,7 @@ class EncuestaController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-	
+
 	public $defaultAction='admin';
 
 	/**
@@ -79,7 +79,28 @@ class EncuestaController extends Controller
 			'model'=>$model,
 		));
 	}
+        /**
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionAdd()
+	{
+		$model=new Encuesta;
 
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Encuesta']))
+		{
+			$model->attributes=$_POST['Encuesta'];
+			if($model->save())
+				 $this->redirect(array('admin'));
+		}
+
+		$this->render('add',array(
+			'model'=>$model,
+		));
+	}
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
