@@ -41,7 +41,7 @@ class UsuarioController extends Controller {
      */
     public function actionSendKeybyEmail() {
         $usuario = $this->loadModel();
-        $key=sha1($usuario->username."|".$usuario->password);
+        $key=$usuario->username."|".  sha1(Yii::app()->db->connectionString."|".Yii::app()->db->tablePrefix."|".$usuario->username."|".$usuario->password);
         $headers = "From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
         $msg="Estimado usuario,
 
