@@ -45,6 +45,7 @@ if ($_SESSION["ids_gupos"] != "") {
         <strong>
             Grupos:</strong>
         <?php
+        //Llamado del grupo
         $command = Yii::app()->db->createCommand();
         $grupos=$command->select('nombre')->from('{{grupo}} g')->where('grupoid IN('. $_SESSION["ids_gupos"] .')')->queryScalar();
         echo $grupos;
@@ -142,7 +143,7 @@ if ($_SESSION["fecha1"] != "" && $_SESSION["fecha2"] != "") {
 
 <?php
 /////////////////////////////////////////////
-//Construir consulta
+//Construir consultas con esquema parametrizado
 $where="E.tipoenvio IN(5,6)";
 $sql = "SELECT DATE_FORMAT(createtime, '%Y-%m-%d') as fecha, count(*) as conteo
       FROM {{mensaje}} M
@@ -225,6 +226,7 @@ if (isset(Yii::app()->user->nivel) && Yii::app()->user->nivel == 2) {
       GROUP BY DATE_FORMAT(createtime, '%Y-%m-%d')";
     }
 }
+//Con esto eliminamos las dos conexiones adicionales que se habian creado
 $command=Yii::app()->db->createCommand($sql);
 $clientes=$command->queryAll();
 

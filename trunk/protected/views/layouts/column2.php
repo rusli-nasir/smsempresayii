@@ -56,7 +56,7 @@
                                     array('label' => Yii::t('App', 'Envio por Operador'), 'url' => array('/EnviosOperadora/admin'),'visible' =>(Yii::app()->user->nivel<3)),
                                     array('label' => Yii::t('App', 'Conversaciones'), 'url' => array('/conversaciones/admin')),
 									array('label' => Yii::t('App', 'Keywords'), 'url' => array('/enviosKeywords/admin')),
-                                    array('label' => Yii::t('App', 'Notificaciones'), 'url' => array('/envionotificacion/admin')),
+                                    array('label' => Yii::t('App', 'Notificaciones'), 'url' => array('/envioNotificacion/admin')),
                                 )),
                             array('label' => Yii::t('App', 'Contact us'), 'url' => array('/site/contact'), 'visible' => !Yii::app()->user->isGuest)
                         ),
